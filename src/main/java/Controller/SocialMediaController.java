@@ -161,12 +161,12 @@ public class SocialMediaController {
         but the response body should be empty. This is because the DELETE verb is intended to be idempotent, ie, multiple calls to the DELETE endpoint should 
         respond with the same type of response. */
         int id = Integer.parseInt(ctx.pathParam("message_id")) ;
-        Message message = messageService.deleteMessageById(id);
-        if(message == null){
+        Message deletedMessage = messageService.deleteMessageById(id);
+        if(deletedMessage == null){
             ctx.json("");
             ctx.status(200);
         }
-        ctx.json(message);
+        ctx.json(deletedMessage);
         
     }
 

@@ -39,8 +39,8 @@ public class MessageService {
     public Message updateMessageById(int id, String messageText){
         
         if(messageDAO.getMessageById(id) != null){
-            
-            return messageDAO.updateMessageById(id, messageText);
+            messageDAO.updateMessageById(id, messageText);
+            return messageDAO.getMessageById(id);
         }
         System.out.print("Message-Id " + id + "does not exist");
         return null;
