@@ -99,11 +99,12 @@ public class SocialMediaController {
          */
         String jsonString = ctx.body();
         ObjectMapper om = new ObjectMapper();
-        Account accountCredintial = om.readValue(jsonString, Account.class);
+        Account accountCredential = om.readValue(jsonString, Account.class);
         //call and use isAccountExist(Account account) method from the AccountService class
-        Account confirmedAccount = accountService.isAccountExist(accountCredintial);
-        if(confirmedAccount != null){
+        Account confirmedAccount = accountService.isAccountExist(accountCredential);
+        if(confirmedAccount != null){        
             ctx.json(confirmedAccount);
+            ctx.status(200);
         }else{
             ctx.status(401);
         }
@@ -145,7 +146,12 @@ public class SocialMediaController {
         be empty if there is no such message. The response status should always be 200, which is the default. */
         int id = Integer.parseInt(ctx.pathParam("message_id")) ;
         Message message = messageService.getMessageById(id);
-        ctx.json(message);
+        if(message == null){
+            ctx.json("");
+        }else{
+            ctx.json(message);
+        }
+        
         
     }
 
@@ -155,7 +161,11 @@ public class SocialMediaController {
         but the response body should be empty. This is because the DELETE verb is intended to be idempotent, ie, multiple calls to the DELETE endpoint should 
         respond with the same type of response. */
         int id = Integer.parseInt(ctx.pathParam("message_id")) ;
-        Message message = messageService.getMessageById(id);
+        Message message = messageService.deleteMessageById(id);
+        if(message == null){
+            ctx.json("");
+            ctx.status(200);
+        }
         ctx.json(message);
         
     }
@@ -171,7 +181,7 @@ public class SocialMediaController {
         ObjectMapper om = new ObjectMapper();
         Message message = om.readValue(ctx.body(), Message.class);
         String messageText = message.getMessage_text();
-        if(messageText == ""){
+        if(messageText == "" || messageText.length() > 255){
             ctx.status(400);
         }else{
             Message updatedMessage = messageService.updateMessageById(id, messageText);
@@ -179,6 +189,7 @@ public class SocialMediaController {
             ctx.status(400);
             }else{
             ctx.json(message);
+            ctx.status(200);
             }
         }
                

@@ -17,7 +17,7 @@ public class AccountService {
         String name = account.getUsername();
         String pass = account.getPassword();
         for(Account a: accounts){
-            if(a.getUsername() == name && a.getPassword() == pass)
+            if(a.getUsername().equals(name) && a.getPassword().equals(pass))
                 return a;
         }
         return null;

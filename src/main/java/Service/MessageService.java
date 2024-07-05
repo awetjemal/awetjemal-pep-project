@@ -28,14 +28,19 @@ public class MessageService {
     }
 
     public Message deleteMessageById(int id){
-        return messageDAO.deleteMessageById(id);
+        if(messageDAO.getMessageById(id) != null){
+            return messageDAO.deleteMessageById(id);
+        }
+        
+        return null;
+               
     }
 
     public Message updateMessageById(int id, String messageText){
-        //flightDAO = new FlightDAO();
+        
         if(messageDAO.getMessageById(id) != null){
-            messageDAO.updateMessageById(id, messageText);
-            return messageDAO.getMessageById(id);
+            
+            return messageDAO.updateMessageById(id, messageText);
         }
         System.out.print("Message-Id " + id + "does not exist");
         return null;
