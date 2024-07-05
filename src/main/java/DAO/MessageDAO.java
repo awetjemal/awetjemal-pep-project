@@ -71,4 +71,73 @@ public class MessageDAO {
         return null;
     }
 
+    public List<Message> getAllMessagesByUserId(int id){
+        Connection connection = ConnectionUtil.getConnection();
+        List<Message> messages = new ArrayList<>();
+        try {
+            //Write SQL logic here
+            String sql = "SELECT * FROM message WHERE posted_by = ? ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()){
+                Message message = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
+                messages.add(message);
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return messages;
+    }
+
+    public Message deleteMessageById(int id){
+        Connection connection = ConnectionUtil.getConnection();
+        
+        try {
+            //Write SQL logic here
+            String sql = "SELECT * FROM message WHERE message_id = ? ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()){
+                Message message = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
+                sql = "DELETE * FROM message WHERE message_id = ? ";
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.executeUpdate(sql);
+                return message;
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+    
+    public Message updateMessageById(int id, String messageText){
+        Connection connection = ConnectionUtil.getConnection();
+        
+        try {
+            //Write SQL logic here
+            String sql = "UPDATE message SET message_text = ? WHERE message_id = ? ";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, messageText);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate(sql);
+            
+            //retrieve and return the updated message object;
+            sql = "SELECT * FROM message WHERE message_id = ? ";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()){
+            Message message = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
+            
+            return message;
+            }
+            
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
 }//end of class
