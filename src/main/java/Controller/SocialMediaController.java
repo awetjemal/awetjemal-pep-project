@@ -188,15 +188,17 @@ public class SocialMediaController {
             ctx.status(400);
         }else{
             Message updatedMessage = messageService.updateMessageById(id, messageText);
-            if(updatedMessage == null){
-            ctx.status(400);
+            ObjectMapper oMapper = new ObjectMapper();
+            if(updatedMessage != null){
+                //System.out.println("The successfull method was returned as json from the controller class");
+                //System.out.println("The message object is  " +  updatedMessage.toString());
+                ctx.json( oMapper.writeValueAsString(updatedMessage));
+                ctx.status(200);
+                
             }else{
-            System.out.println("The successfull method was returned as json from the controller class");
-            System.out.println("The message object is  " +  message.toString());
-            ctx.json( om.writeValueAsString(message));
-            ctx.status(200);
+                ctx.status(400);
             }
-        }
+        }  
                
     }
 

@@ -63,6 +63,7 @@ public class MessageDAO {
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
                 Message message = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
+                //System.out.println("From getMessageById method id and the message object respectivelly are  " + id + "  " + message);
                 return message;
             }
         }catch(SQLException e){
@@ -130,7 +131,10 @@ public class MessageDAO {
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
-
+            //System.out.println("Message updated and returned from updateMessageById Method from MessageDAO class");
+            //System.out.println("The id & text message parameters from MessageDAO class " + id + "  " + messageText);
+            return getMessageById(id);
+            /*
             //retrieve and return the updated message object;
             String query = "SELECT * FROM message WHERE message_id = ? ";
             PreparedStatement preparedStatement2 = connection.prepareStatement(query);
@@ -138,9 +142,9 @@ public class MessageDAO {
             ResultSet rs = preparedStatement2.executeQuery();
            while(rs.next()){
             Message message = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
-            System.out.println("Message updated and returned from updateMessageById Method from MessageDAO class");
+            
             return message;
-            }
+            }*/
             
         }catch(SQLException e){
             System.out.println(e.getMessage());

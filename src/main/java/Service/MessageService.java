@@ -37,9 +37,9 @@ public class MessageService {
     public Message updateMessageById(int id, String messageText){
         
         if(messageDAO.getMessageById(id) != null){
-            
-            System.out.println("Message-existed and updated --- from updateMessageById method from MessageService class");
-            return messageDAO.updateMessageById(id, messageText);
+            Message updatedMessage = messageDAO.updateMessageById(id, messageText);
+            //System.out.println("The updatedmessage object --- from updateMessageById method from MessageService class is  " + updatedMessage);
+            return updatedMessage;
 
         }
         System.out.print("Message-Id " + id + "does not exist");
