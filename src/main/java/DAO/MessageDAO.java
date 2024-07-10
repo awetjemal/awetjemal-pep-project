@@ -105,7 +105,9 @@ public class MessageDAO {
                 String deleteSql = "DELETE FROM message WHERE message_id = ? ";
                 PreparedStatement p = connection.prepareStatement(deleteSql);
                 p.setInt(1, id);
-                p.execute();
+                p.executeUpdate();
+                System.out.println("Deleted one record---");
+                p.close();
                 return message;
             }
                 
@@ -127,7 +129,8 @@ public class MessageDAO {
             preparedStatement.setInt(2, id);
 
             preparedStatement.executeUpdate();
-            /*
+            preparedStatement.close();
+
             //retrieve and return the updated message object;
             String query = "SELECT * FROM message WHERE message_id = ? ";
             PreparedStatement preparedStatement2 = connection.prepareStatement(query);
@@ -135,10 +138,10 @@ public class MessageDAO {
             ResultSet rs = preparedStatement2.executeQuery();
            while(rs.next()){
             Message message = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
-            
+            System.out.println("Message updated and returned from updateMessageById Method from MessageDAO class");
             return message;
             }
-            */
+            
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }

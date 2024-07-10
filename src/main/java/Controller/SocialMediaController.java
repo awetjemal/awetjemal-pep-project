@@ -163,10 +163,13 @@ public class SocialMediaController {
         int id = Integer.parseInt(ctx.pathParam("message_id")) ;
         Message deletedMessage = messageService.deleteMessageById(id);
         if(deletedMessage == null){
+            
             ctx.json("");
             ctx.status(200);
+        }else{
+            ctx.json(deletedMessage);
         }
-        ctx.json(deletedMessage);
+        
         
     }
 
@@ -188,7 +191,9 @@ public class SocialMediaController {
             if(updatedMessage == null){
             ctx.status(400);
             }else{
-            ctx.json(message);
+            System.out.println("The successfull method was returned as json from the controller class");
+            System.out.println("The message object is  " +  message.toString());
+            ctx.json( om.writeValueAsString(message));
             ctx.status(200);
             }
         }

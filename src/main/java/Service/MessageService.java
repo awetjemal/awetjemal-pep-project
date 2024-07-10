@@ -28,19 +28,19 @@ public class MessageService {
     }
 
     public Message deleteMessageById(int id){
-        if(messageDAO.getMessageById(id) != null){
-            return messageDAO.deleteMessageById(id);
-        }
+        MessageDAO msgDao = new MessageDAO();
+        System.out.println("deleteMEssageById from the MessageService class");
+        return msgDao.deleteMessageById(id);
         
-        return null;
-               
     }
 
     public Message updateMessageById(int id, String messageText){
         
         if(messageDAO.getMessageById(id) != null){
-            messageDAO.updateMessageById(id, messageText);
-            return messageDAO.getMessageById(id);
+            
+            System.out.println("Message-existed and updated --- from updateMessageById method from MessageService class");
+            return messageDAO.updateMessageById(id, messageText);
+
         }
         System.out.print("Message-Id " + id + "does not exist");
         return null;
